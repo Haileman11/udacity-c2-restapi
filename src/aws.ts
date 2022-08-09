@@ -1,18 +1,18 @@
 import AWS = require('aws-sdk');
 import { config } from './config/config';
 
-// const c = config.dev;
+const c = config.dev;
 
 //Configure AWS
-if(process.env.AWS_PROFILE !== "DEPLOYED") {
-  var credentials = new AWS.SharedIniFileCredentials({profile: process.env.AWS_PROFILE});
+if(c.aws_profile !== "DEPLOYED") {
+  var credentials = new AWS.SharedIniFileCredentials({profile: c.aws_profile});
  AWS.config.credentials = credentials;
 }
 
 export const s3 = new AWS.S3({
   signatureVersion: 'v4',
-  region: process.env.AWS_REGION,
-  params: {Bucket: process.env.AWS_MEDIA_BUCKET}
+  region: c.aws_region,
+  params: {Bucket: c.aws_media_bucket}
 });
 
 
@@ -27,7 +27,7 @@ export function getGetSignedUrl( key: string ): string{
   const signedUrlExpireSeconds = 60 * 5
 
     const url = s3.getSignedUrl('getObject', {
-        Bucket: process.env.AWS_MEDIA_BUCKET,
+        Bucket: c.aws_media_bucket,
         Key: key,
         Expires: signedUrlExpireSeconds
       });
@@ -46,7 +46,7 @@ export function getPutSignedUrl( key: string ){
     const signedUrlExpireSeconds = 60 * 5
 
     const url = s3.getSignedUrl('putObject', {
-      Bucket: process.env.AWS_MEDIA_BUCKET,
+      Bucket: c.aws_media_bucket,
       Key: key,
       Expires: signedUrlExpireSeconds
     });

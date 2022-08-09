@@ -50,11 +50,11 @@ router.patch('/:id',
 
 // Get a signed url to put a new item in the bucket
 router.get('/signed-url/:fileName', 
-    requireAuth, 
+    // requireAuth, 
     async (req: Request, res: Response) => {
     let { fileName } = req.params;
     const url = AWS.getPutSignedUrl(fileName);
-    res.status(201).send({url: url});
+    return res.status(201).send({url: url});
 });
 
 // Post meta data and the filename after a file is uploaded 
